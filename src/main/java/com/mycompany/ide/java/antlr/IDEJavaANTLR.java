@@ -13,7 +13,7 @@ public class IDEJavaANTLR {
 
     public static void main(String[] args) {
         //System.out.println("Hello World!");
-        //NotePad notepad = new NotePad();
-        Test test = new Test();
+        NotePad notepad = new NotePad();
+        //Test test = new Test();
     }
 }

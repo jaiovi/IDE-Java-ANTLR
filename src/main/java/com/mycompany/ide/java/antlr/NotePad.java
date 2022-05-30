@@ -8,6 +8,7 @@ import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -74,7 +75,19 @@ JTextArea jtaColoreado = new JTextArea();
 		addWindowListener(this);
 		setSize(500,500);
 		setTitle("SinTitulo.txt - MatricesIDE");
-				
+                
+                //adicional para reportar DEBUGGING del compilado
+                
+		// create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
+                JPanel statusPanel = new JPanel();
+                statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+                con.add(statusPanel, BorderLayout.SOUTH);
+                statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
+                statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+                JLabel statusLabel = new JLabel("Listo :)");
+                statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                statusPanel.add(statusLabel);	
+                
 		setVisible(true);
 	
 	}
