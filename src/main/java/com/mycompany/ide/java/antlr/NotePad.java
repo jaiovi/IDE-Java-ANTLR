@@ -20,12 +20,15 @@ import javax.swing.text.Element;
  * @author sebjaiovi
  */
 public class NotePad extends JFrame implements ActionListener, WindowListener{
-JTextPane jta = new JTextPane();
+//JTextPane jta = new JTextPane();
+private static JTextArea jta;
 JTextArea jtaColoreado = new JTextArea();
 private static JTextArea lines; //numeritos
 File fnameContainer;
     
     public NotePad(){
+                //Definicion de area de texto y numero de linea
+                jta = new JTextArea();
                 lines = new JTextArea("1");
                 lines.setBackground(Color.LIGHT_GRAY);
                 lines.setEditable(false);
@@ -125,9 +128,16 @@ File fnameContainer;
       
                 //con.setRowHeaderView(lines);
                 
-                lines.setBounds(16, 32, 10, 20); // TODO: Unir barra numeros linea con el editor de texto 
-                add(lines);
-		setVisible(true);
+                //lines.setBounds(16, 32, 10, 20); // TODO: Unir barra numeros linea con el editor de texto 
+                //add(lines);
+		//setVisible(true);
+                sbrText.getViewport().add(jta);
+                sbrText.setRowHeaderView(lines);
+                add(sbrText);
+                setSize(400, 275);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setLocationRelativeTo(null);
+                setVisible(true);
                 
                 //Generar Terminal : codigo trabaj
 	
