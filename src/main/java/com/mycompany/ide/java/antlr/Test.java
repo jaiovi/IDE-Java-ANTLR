@@ -55,9 +55,9 @@ public class Test extends JFrame {
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                         if (text.substring(wordL, wordR).matches("(\\W)*(private|public|protected)"))
-                            setCharacterAttributes(wordL, wordR - wordL, attr, false);
+                            setCharacterAttributes(wordL, wordR - wordL, attr, false); //colorea rojo
                         else
-                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
+                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //no le hace nada
                         wordL = wordR;
                     }
                     wordR++;

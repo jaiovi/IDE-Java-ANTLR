@@ -9,18 +9,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+        
+import javax.swing.text.Element;
 
 /**
- *
+ * GEEKS FOR GEEKS
  * @author sebjaiovi
  */
 public class NotePad extends JFrame implements ActionListener, WindowListener{
 JTextPane jta = new JTextPane();
 JTextArea jtaColoreado = new JTextArea();
-    File fnameContainer;
+private static JTextArea lines; //numeritos
+File fnameContainer;
     
     public NotePad(){
+                lines = new JTextArea("1");
+                lines.setBackground(Color.LIGHT_GRAY);
+                lines.setEditable(false);
                 //Definimos font normal
 		Font fnt=new Font("Arial",Font.PLAIN,15);
 		Container con=getContentPane();
@@ -78,17 +86,50 @@ JTextArea jtaColoreado = new JTextArea();
                 
                 //adicional para reportar DEBUGGING del compilado
                 
+                String notifica = "Hola";
 		// create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
                 JPanel statusPanel = new JPanel();
                 statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
                 con.add(statusPanel, BorderLayout.SOUTH);
                 statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
                 statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-                JLabel statusLabel = new JLabel("Listo :)");
+                JLabel statusLabel = new JLabel(""+notifica); //varible a modificar
                 statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
                 statusPanel.add(statusLabel);	
                 
+                
+      //  Code to implement line numbers inside the JTextArea
+      jta.getDocument().addDocumentListener(new DocumentListener() {
+         public String getText() {
+            int caretPosition = jta.getDocument().getLength();
+            Element root = jta.getDocument().getDefaultRootElement();
+            String text = "1" + System.getProperty("line.separator");
+               for(int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
+                  text += i + System.getProperty("line.separator");
+               }
+            return text;
+         }
+         @Override
+         public void changedUpdate(DocumentEvent de) {
+            lines.setText(getText());
+         }
+         @Override
+         public void insertUpdate(DocumentEvent de) {
+            lines.setText(getText());
+         }
+         @Override
+         public void removeUpdate(DocumentEvent de) {
+            lines.setText(getText());
+         }
+      });
+      
+                //con.setRowHeaderView(lines);
+                
+                lines.setBounds(16, 32, 10, 20); // TODO: Unir barra numeros linea con el editor de texto 
+                add(lines);
 		setVisible(true);
+                
+                //Generar Terminal : codigo trabaj
 	
 	}
 
