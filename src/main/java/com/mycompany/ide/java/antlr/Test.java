@@ -42,8 +42,12 @@ public class Test extends JFrame {
         final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
         final AttributeSet attrBlue = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLUE);
         final AttributeSet attrOrg = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.ORANGE);
-        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
-        final AttributeSet attrBold = cont.addAttribute(cont.getEmptySet(),StyleConstants.CharacterConstants.Bold, Color.BLACK);
+        final SimpleAttributeSet attrBlack = new SimpleAttributeSet();
+        StyleConstants.setForeground(attrBlack, Color.BLACK);
+        StyleConstants.setBold(attrBlack, true);
+        //cont.addAttribute(cont.getEmptySet(), StyleConstants.Bold, Color.BLACK);
+        final AttributeSet attrSimple = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+        //final AttributeSet attrBold = cont.addAttribute(cont.getEmptySet(),StyleConstants.CharacterConstants.Bold, Color.BLACK);
         DefaultStyledDocument doc = new DefaultStyledDocument() {
             public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a);
@@ -59,7 +63,7 @@ public class Test extends JFrame {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                         if (text.substring(wordL, wordR).matches("(\\W)*(matriz)"))
                         {
-                            setCharacterAttributes(wordL, wordR - wordL, attr, false); //colorea rojo
+                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //colorea rojo
                         }
                         else
                         {
@@ -71,7 +75,7 @@ public class Test extends JFrame {
                             {
                                 if (text.substring(wordL, wordR).matches("(\\W)*(write)"))
                                 {
-                                    setCharacterAttributes(wordL, wordR - wordL, attrOrg, false); //colorea rojo
+                                    setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //colorea rojo
                                 }
                                 else
                                 {
@@ -81,7 +85,7 @@ public class Test extends JFrame {
                                     }
                                     else
                                     {
-                                        setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //no le hace nada   
+                                        setCharacterAttributes(wordL, wordR - wordL, attrSimple, false); //no le hace nada   
                                     }
                                 }
                             }
@@ -101,7 +105,7 @@ public class Test extends JFrame {
                 int after = findFirstNonWordChar(text, offs);
 
                 if (text.substring(before, after).matches("(\\W)*(matriz)")) {
-                    setCharacterAttributes(before, after - before, attr, false);
+                    setCharacterAttributes(before, after - before, attrBlack, false);
                 } else {
                     
                     if (text.substring(before, after).matches("(\\W)*(int)")) 
@@ -112,7 +116,7 @@ public class Test extends JFrame {
                     {
                         if (text.substring(before, after).matches("(\\W)*(witre)")) 
                         {
-                            setCharacterAttributes(before, after - before, attrOrg, false);
+                            setCharacterAttributes(before, after - before, attrBlack, false);
                         }
                         else
                         {
@@ -122,7 +126,7 @@ public class Test extends JFrame {
                             }
                             else
                             {
-                                setCharacterAttributes(before, after - before, attrBlack, false);
+                                setCharacterAttributes(before, after - before, attrSimple, false);
                             }
                         }
                     }
