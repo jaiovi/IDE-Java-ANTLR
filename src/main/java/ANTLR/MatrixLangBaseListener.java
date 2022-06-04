@@ -1,4 +1,5 @@
 package ANTLR;
+
 // Generated from .\MatrixLang.g4 by ANTLR 4.8
 
 import java.util.ArrayList;
@@ -123,6 +124,11 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 
 	CancellationException exitWalker = new CancellationException();
 
+	public List<int [][]> writeList = new ArrayList<>();
+
+	public int semanticErrorPos;
+	public String semanticErrorMsg;
+
 	@Override public void enterProg(MatrixLangParser.ProgContext ctx) {
 		sb.append("public class " + outputFile + " {");
 		sb.append("\n");
@@ -225,6 +231,12 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 	}
 	 
 	@Override public void exitWriteOnConsole(MatrixLangParser.WriteOnConsoleContext ctx) { 
+		if (AST.getMatValue(matVar) == null) {
+			semanticErrorPos = ctx.start.getStartIndex();
+			semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable no definida (no se puede imprimir)";
+			throw exitWalker;
+		}
+		writeList.add(AST.getMatValue(matVar));
 		sb.append(");");
 		sb.append("\n");
 		write = false;
@@ -239,17 +251,16 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 		sb.append(")");
 		resultMat = sub(memoryMat, memoryMatSec);
 		if (resultMat == null) {
-			System.out.println("\t\tError: Dimensiones diferentes de matrices (no se puede restar)");
-			sb.append("\n");
+			semanticErrorPos = ctx.start.getStartIndex();
+			semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Dimensiones diferentes de matrices (no se puede restar)";
 			throw exitWalker;
 		}
 	}
 	 
 	@Override public void enterVariableOp(MatrixLangParser.VariableOpContext ctx) { 
 		if (!AST.matVarExist(ctx.getText())){
-			System.out.println("Error: Variable " + ctx.getText() + " no existe.");
-			System.out.println(ctx.start.getLine());
-			System.out.println(ctx.start.getStopIndex());
+			semanticErrorPos = ctx.start.getStartIndex();
+			semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no existe.";
 			throw exitWalker;
 		}
 
@@ -258,18 +269,16 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 		if (firstArg) {
 			memoryMat = AST.getMatValue(ctx.getText());
 			if (memoryMat == null) {
-				System.out.println("Error: Variable " + ctx.getText() + " no esta definida.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no esta definida.";
 				throw exitWalker;
 			}
 		}
 		else {
 			memoryMatSec = AST.getMatValue(ctx.getText());
 			if (memoryMatSec == null) {
-				System.out.println("Error: Variable " + ctx.getText() + " no esta definida.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no esta definida.";
 				throw exitWalker;
 			}
 		}
@@ -296,9 +305,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 		sb.append(")");
 		resultMat = mult(memoryMat, memoryMatSec);
 		if (resultMat == null) {
-			System.out.println("\t\tError: Dimensiones diferentes de matrices (no se puede multiplicar)");
-			System.out.println(ctx.start.getLine());
-			System.out.println(ctx.start.getStopIndex());
+			semanticErrorPos = ctx.start.getStartIndex();
+			semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Dimensiones diferentes de matrices (no se puede multiplicar)";
 			throw exitWalker;
 		}
 	}
@@ -312,9 +320,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 		sb.append(")");
 		resultMat = add(memoryMat, memoryMatSec);
 		if (resultMat == null) {
-			System.out.println("\t\tError: Dimensiones diferentes de matrices (no se puede sumar)");
-			System.out.println(ctx.start.getLine());
-			System.out.println(ctx.start.getStopIndex());
+			semanticErrorPos = ctx.start.getStartIndex();
+			semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Dimensiones diferentes de matrices (no se puede sumar)";
 			throw exitWalker;
 		}
 	}
@@ -346,9 +353,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 		// Creating variable for AST
 		for (String col : matrix.split(";")) {
 			if (col.split(",").length != colLength) {
-				System.out.println("Error: Dimensiones de la matriz no son constantes.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Dimensiones de la matriz no son constantes.";
 				throw exitWalker;
 			}
 			for (String row : col.split(",")) {
@@ -444,9 +450,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 				sb.append("\t\t" + intVar + " = ");
 			}
 			else {
-				System.out.println("Error: Variable " + ctx.getText() + " no existe.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no existe.";
 				throw exitWalker;
 			}
 		}
@@ -456,9 +461,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 				sb.append("\t\t" + matVar + " = new int[][] ");
 			}
 			else {
-				System.out.println("Error: Variable " + ctx.getText() + " no existe.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no existe.";
 				throw exitWalker;
 			}
 		}
@@ -469,9 +473,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 				definesOp = false;
 			}
 			else {
-				System.out.println("Error: Variable " + ctx.getText() + " no existe.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no existe.";
 				throw exitWalker;
 			}
 		}
@@ -482,9 +485,8 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 				write = false;
 			}
 			else {
-				System.out.println("Error: Variable " + ctx.getText() + " no existe.");
-				System.out.println(ctx.start.getLine());
-				System.out.println(ctx.start.getStopIndex());
+				semanticErrorPos = ctx.start.getStartIndex();
+				semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + ctx.getText() + " no existe.";
 				throw exitWalker;
 			}
 		}

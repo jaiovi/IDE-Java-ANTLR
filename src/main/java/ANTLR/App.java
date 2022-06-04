@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class App {
 	public static void main(String[] args) throws Exception {
 		// Leyendo archivo de entrada
-		File file = new File("C:\\Users\\NINJA\\Desktop\\Tec\\4º Semestre\\Implementacion\\IDE-Java-ANTLR\\src\\main\\java\\ANTLR\\test.txt");
+		File file = new File("C:\\Users\\NINJA\\Desktop\\Tec\\4º Semestre\\Implementacion\\IDE-Java-ANTLR-Traductor\\src\\main\\java\\ANTLR\\test.txt");
 		StringBuilder sb = new StringBuilder();
 		String source_code = "";
 		Scanner sc = new Scanner(file);
@@ -24,10 +24,12 @@ public class App {
 		translator.updateCheck(source_code);
 		
 		// Obteniendo errores lexer
-		List<Integer> lexerErrors = translator.lexerErrors();
+		List<Integer> lexerErrors = translator.lexerErrorsPos();
+		List<String> lexerErrorsMsg = translator.lexerErrorsMsg();
 
 		// Obteniendo errores parser
-		List<Integer> parserErrors = translator.parserErrors();
+		List<Integer> parserErrors = translator.parserErrorsPos();
+		List<String> parserErrorsMsg = translator.parserErrorsMsg();
 
 		// Imprimiendo traduccion a java
 		translator.translate("Hola");
