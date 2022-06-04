@@ -20,85 +20,88 @@ import javax.swing.text.Element;
  * @author sebjaiovi
  */
 public class NotePad extends JFrame implements ActionListener, WindowListener{
-//JTextPane jta = new JTextPane();
-private static JTextArea jta;
-JTextArea jtaColoreado = new JTextArea();
-private static JTextArea lines; //numeritos
-File fnameContainer;
+    //JTextPane jta = new JTextPane();
+    private static JTextArea jta;
+    JTextArea jtaColoreado = new JTextArea();
+    private static JTextArea lines; //numeritos
+    
+    private static JLabel statusLabel;
+    private String pathArchivo;
+    File fnameContainer;
     
     public NotePad(){
-                //Definicion de area de texto y numero de linea
-                jta = new JTextArea();
-                lines = new JTextArea("1");
-                lines.setBackground(Color.LIGHT_GRAY);
-                lines.setEditable(false);
-                //Definimos font normal
-		Font fnt=new Font("Arial",Font.PLAIN,15);
-		Container con=getContentPane();
-		
-                //interfaz grafica PT1
-		JMenuBar jmb=new JMenuBar();
-		JMenu jmfile = new JMenu("Archivo");
-		JMenu jmedit = new JMenu("Editar");
-                
-                JMenu jmide = new JMenu("IDE");
-                
-		JMenu jmhelp = new JMenu("Ayuda");
-		
-		con.setLayout(new BorderLayout());
-		JScrollPane sbrText = new JScrollPane(jta);
-		sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		sbrText.setVisible(true);
-		
-		//definimos en general font
-		jta.setFont(fnt);
-                //DEL TEXT AREA, reemplazado por PANE
-		//jta.setLineWrap(true);
-		//jta.setWrapStyleWord(true);
-		
-                //donde el container recibe nuestra caja de texto especificada
-		con.add(sbrText);
-                
-                //mas de la gui
-		createMenuItem(jmfile,"Nuevo");
-		createMenuItem(jmfile,"Abrir");
-		createMenuItem(jmfile,"Guardar");
-		jmfile.addSeparator();
-		createMenuItem(jmfile,"Salir");
-		
-		createMenuItem(jmedit,"Cortar");
-		createMenuItem(jmedit,"Copiar");
-		createMenuItem(jmedit,"Pegar");
-                
-                createMenuItem(jmide, "Correr");
-		
-		createMenuItem(jmhelp,"Creditos");
-		
-		jmb.add(jmfile);
-		jmb.add(jmedit);
-                
-                jmb.add(jmide);
-                
-		jmb.add(jmhelp);
-		
-		setJMenuBar(jmb);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("notepad.gif"));
-		addWindowListener(this);
-		setSize(500,500);
-		setTitle("SinTitulo.txt - MatricesIDE");
-                
-                //adicional para reportar DEBUGGING del compilado
-                
-                String notifica = "Hola";
-		// create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
-                JPanel statusPanel = new JPanel();
-                statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-                con.add(statusPanel, BorderLayout.SOUTH);
-                statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
-                statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-                JLabel statusLabel = new JLabel(""+notifica); //varible a modificar
-                statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
-                statusPanel.add(statusLabel);	
+        //Definicion de area de texto y numero de linea
+        jta = new JTextArea();
+        lines = new JTextArea("1");
+        lines.setBackground(Color.LIGHT_GRAY);
+        lines.setEditable(false);
+        //Definimos font normal
+        Font fnt=new Font("Arial",Font.PLAIN,15);
+        Container con=getContentPane();
+
+        //interfaz grafica PT1
+        JMenuBar jmb=new JMenuBar();
+        JMenu jmfile = new JMenu("Archivo");
+        JMenu jmedit = new JMenu("Editar");
+        JMenu jmide = new JMenu("IDE");
+        JMenu jmhelp = new JMenu("Ayuda");
+
+        con.setLayout(new BorderLayout());
+        JScrollPane sbrText = new JScrollPane(jta);
+        sbrText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        sbrText.setVisible(true);
+
+        //definimos en general font
+        jta.setFont(fnt);
+        //DEL TEXT AREA, reemplazado por PANE
+        //jta.setLineWrap(true);
+        //jta.setWrapStyleWord(true);
+
+        //donde el container recibe nuestra caja de texto especificada
+        con.add(sbrText);
+
+        //mas de la gui
+        createMenuItem(jmfile,"Nuevo");
+        createMenuItem(jmfile,"Abrir");
+        createMenuItem(jmfile,"Guardar");
+        jmfile.addSeparator();
+        createMenuItem(jmfile,"Salir");
+
+        createMenuItem(jmedit,"Cortar");
+        createMenuItem(jmedit,"Copiar");
+        createMenuItem(jmedit,"Pegar");
+
+        createMenuItem(jmide, "Correr");
+
+        createMenuItem(jmhelp,"Creditos");
+
+        jmb.add(jmfile);
+        jmb.add(jmedit);
+
+        jmb.add(jmide);
+
+        jmb.add(jmhelp);
+
+        setJMenuBar(jmb);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("notepad.gif"));
+        addWindowListener(this);
+        setSize(500,500);
+        setTitle("SinTitulo.txt - MatricesIDE");
+
+        //adicional para reportar DEBUGGING del compilado
+
+        //String notifica = "Hola"; YA EN CABECERA
+        // create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        con.add(statusPanel, BorderLayout.SOUTH);
+        statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        //JLabel statusLabel = new JLabel(""+notifica); //varible a modificar
+        statusLabel= new JLabel();
+        statusLabel.setText("Listo :)");
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusPanel.add(statusLabel);	
                 
                 
       //  Code to implement line numbers inside the JTextArea
@@ -202,10 +205,13 @@ File fnameContainer;
 		}else if(e.getActionCommand().equals("Pegar")){
 			jta.paste();
 		}else if(e.getActionCommand().equals("Creditos")){ 
-			JOptionPane.showMessageDialog(this,"MatricesIDE - Created by: Geeks for Geeks (https://www.geeksforgeeks.org/)","Notepad",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this,"MatricesIDE - Programa creado para Metodos Computacionales 4SEM - Lunes 6 junio 2022","MatricesIDE",JOptionPane.INFORMATION_MESSAGE);
 		}else if(e.getActionCommand().equals("Cortar")){
 			jta.cut();
-		}
+		}else if(e.getActionCommand().equals("Correr")){
+                        //String notifica = Compilar();
+                        statusLabel.setText( Compilar() ); //Compilar devuelve String marcando linea error
+                }
 	}
 	
 	public void OpenFile(String fname) throws IOException {	
@@ -249,4 +255,18 @@ File fnameContainer;
 		System.exit(0);
 	}
         
+        //FUNCIONALIDADES
+        public String Compilar(){
+            boolean error;
+            //
+            // mete todo el proceso de compilado aqui
+            //
+            error = true;
+            
+            if(error){
+                JOptionPane.showMessageDialog(this,"Hubo error para compilar en x linea","MatricesIDE error",JOptionPane.INFORMATION_MESSAGE);
+                return "Linea X" + ": Error del tipo " + "bla bla";
+            }else
+                return "Compilado correcto c:";
+        }
 }
