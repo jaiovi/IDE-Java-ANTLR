@@ -168,7 +168,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                         {
                             if (text.substring(wordL, wordR).matches("(\\W)*(int)"))
                             {
-                                setCharacterAttributes(wordL, wordR - wordL, attrBlue, false); //colorea azul
+                                setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //colorea azul
                             }
                             else
                             {
@@ -193,8 +193,8 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                     }
                     wordR++;
                 }
+                translator.updateCheck(txt.getText());
                 
-                System.out.println("Hola");
             }
 
             public void remove (int offs, int len) throws BadLocationException {
@@ -211,7 +211,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                     
                     if (text.substring(before, after).matches("(\\W)*(int)")) 
                     {
-                        setCharacterAttributes(before, after - before, attrBlue, false);
+                        setCharacterAttributes(before, after - before, attrBlack, false);
                     }
                     else
                     {
@@ -232,6 +232,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                         }
                     }
                 }
+                translator.updateCheck(txt.getText());
             }
         };
         

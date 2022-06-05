@@ -5,7 +5,7 @@ prog
 	;
 
 body
-	: (variable)+ (proceso)*
+	: (variable | proceso)*
 	;
 
 variable

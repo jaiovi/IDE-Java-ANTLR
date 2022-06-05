@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class App {
 	public static void main(String[] args) throws Exception {
 		// Leyendo archivo de entrada
-		File file = new File("C:\\Users\\NINJA\\Desktop\\Tec\\4º Semestre\\Implementacion\\IDE-Java-ANTLR-Traductor\\src\\main\\java\\ANTLR\\test.txt");
+		File file = new File(".\\test.txt");
 		StringBuilder sb = new StringBuilder();
 		String source_code = "";
 		Scanner sc = new Scanner(file);

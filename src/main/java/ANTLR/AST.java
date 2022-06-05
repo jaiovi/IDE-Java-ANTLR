@@ -74,11 +74,21 @@ public class AST {
 				return true;
 			}
 		}
+		for (String stored : matVars) {
+			if (stored.equals(var)) {
+				return true;
+			}
+		}
 		return false;
 	}
         
         // Verificando si una variable tipo mat existe - O(n)
 	public static boolean matVarExist(String var) {
+		for (String stored : intVars) {
+			if (stored.equals(var)) {
+				return true;
+			}
+		}
 		for (String stored : matVars) {
 			if (stored.equals(var)) {
 				return true;

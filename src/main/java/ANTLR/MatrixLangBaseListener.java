@@ -1,7 +1,6 @@
 package ANTLR;
 
 // Generated from .\MatrixLang.g4 by ANTLR 4.8
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -114,7 +113,60 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 	private boolean firstArg = false;
 	// Length of column of matrix
 	private int colLength;
-
+        
+        String functions = 
+        "\tpublic static int[][] transpose (int[][] mat) {\n" +
+        "\t\tint res[][] = new int[mat[0].length][mat.length];\n" +
+        "\t\tfor (int i = 0; i < mat.length; i++) {\n" +
+        "\t\t\tfor (int j = 0; j < mat[0].length; j++) {\n" +
+        "\t\t\t\tres[j][i] = mat[i][j];\n" +
+        "\t\t\t}\n" +
+        "\t\t}\n" +
+        "\t\treturn res;\n" +
+        "\t}" +
+        "\n" +
+        "\tpublic static int[][] mult (int[][] mat1, int[][] mat2) {\n" +
+        "\t\tint res[][] = new int[mat1.length][mat2[0].length];\n" +
+        "\t\tfor (int i = 0; i < mat1.length; i++) {\n" +
+        "\t\t\tfor (int j = 0; j < mat2[0].length; j++) {\n" +
+        "\t\t\t\tfor (int k = 0; k < mat2.length; k++) {\n" +
+        "\t\t\t\t\tres[i][j] += mat1[i][k] * mat2[k][j];\n" +
+        "\t\t\t\t}\n" +
+        "\t\t\t}\n" +
+        "\t\t}\n" +
+        "\t\treturn res;\n" +
+        "\t}" +
+        "\n" +
+        "\tpublic static int[][] add (int[][] mat1, int[][] mat2) {\n" +
+        "\t\tint res[][] = new int[mat1.length][mat1[0].length];\n" +
+        "\t\tfor (int i = 0; i < mat1.length; i++) {\n" +
+        "\t\t\tfor (int j = 0; j < mat1[0].length; j++) {\n" +
+        "\t\t\t\tres[i][j] = mat1[i][j] + mat2[i][j];\n" +
+        "\t\t\t}\n" +
+        "\t\t}\n" +
+        "\t\treturn res;\n" +
+        "\t}" +
+        "\n" +
+        "\tpublic static int[][] sub (int[][] mat1, int[][] mat2) {\n" +
+        "\t\tint res[][] = new int[mat1.length][mat1[0].length];\n" +
+        "\t\tfor (int i = 0; i < mat1.length; i++) {\n" +
+        "\t\t\tfor (int j = 0; j < mat1[0].length; j++) {\n" +
+        "\t\t\t\tres[i][j] = mat1[i][j] - mat2[i][j];\n" +
+        "\t\t\t}\n" +
+        "\t\t}\n" +
+        "\t\treturn res;\n" +
+        "\t}" +
+        "\n" +
+        "\tpublic static void print (int [][] mat) {\n" +
+        "\t\tfor (int i = 0; i < mat.length; i++) {\n" +
+        "\t\t\tfor (int j = 0; j < mat[0].length; j++) {\n" +
+        "\t\t\t\tSystem.out.print(mat[i][j] + \" \");\n" +
+        "\t\t\t}\n" +
+        "\t\t\tSystem.out.println();\n" +
+        "\t\t}\n" +
+        "\t}";
+        
+        
 	private String intVar;
 	private String matVar;
 
@@ -147,6 +199,9 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 	@Override public void exitBody(MatrixLangParser.BodyContext ctx) { 
 		sb.append("\t}");
 		sb.append("\n");
+                sb.append(functions);
+		sb.append("\n");
+                        
 	}
 	 
 	@Override public void enterDeclareInt(MatrixLangParser.DeclareIntContext ctx) { 
@@ -184,9 +239,19 @@ public class MatrixLangBaseListener implements MatrixLangListener {
 			i++;
 
 			if (declaresInt) {
+				if (AST.intVarExist(var)) {
+					semanticErrorPos = ctx.start.getStartIndex();
+					semanticErrorMsg = "Variable " + var + " already declared";semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + var + " ya esta declarada.";
+					throw exitWalker;
+				}
 				AST.addIntVar(var);
 			}
 			else if (declaresMat) {
+				if (AST.matVarExist(var)) {
+					semanticErrorPos = ctx.start.getStartIndex();
+					semanticErrorMsg = "Variable " + var + " already declared";semanticErrorMsg = "Error en linea (" + ctx.start.getLine() + "): Variable " + var + " ya esta declarada.";
+					throw exitWalker;
+				}
 				AST.addMatVar(var);
 			}
 		}
