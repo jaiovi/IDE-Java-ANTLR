@@ -384,7 +384,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
             translator.updateCheck(txt.getText());
             statusLabel.setText( compilar("Programa") ); //Compilar() devuelve String marcando linea error
         }else if(e.getActionCommand().equals("Creditos")){ 
-            JOptionPane.showMessageDialog(this,"MatricesIDE - Created by: Geeks for Geeks (https://www.geeksforgeeks.org/)","Notepad",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Evidencia 2 de Implementación de métodos computacionales (Gpo 606) - Equipo 3","MatricesIDE",JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getActionCommand().equals("Cortar")){
             jta.cut();
         }
