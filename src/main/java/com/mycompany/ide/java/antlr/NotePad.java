@@ -186,7 +186,14 @@ File fnameContainer;
                                     }
                                     else
                                     {
-                                        setCharacterAttributes(wordL, wordR - wordL, attrSimple, false); //no le hace nada   
+                                        if (text.substring(wordL, wordR).matches("(\\W)*(main)"))
+                                        {
+                                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //colorea negro y negritas
+                                        }
+                                        else
+                                        {
+                                            setCharacterAttributes(wordL, wordR - wordL, attrSimple, false); //no le hace nada  
+                                        } 
                                     }
                                 }
                             }
@@ -227,7 +234,14 @@ File fnameContainer;
                             }
                             else
                             {
-                                setCharacterAttributes(before, after - before, attrSimple, false);
+                                if (text.substring(before, after).matches("(\\W)*(main)"))
+                                {
+                                    setCharacterAttributes(before, after - before, attrBlack, false);
+                                }        
+                                else
+                                {
+                                   setCharacterAttributes(before, after - before, attrSimple, false);     
+                                }
                             }
                         }
                     }
@@ -387,7 +401,7 @@ File fnameContainer;
 	public void SaveFile(String fname) throws IOException {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		DataOutputStream o=new DataOutputStream(new FileOutputStream(fname));
-		o.writeBytes(jta.getText());
+		o.writeBytes(txt.getText());
 		o.close();		
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
