@@ -40,6 +40,9 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
     JTextArea jtaColoreado = new JTextArea();
     private static JTextArea lines; //numeritos
     File fnameContainer;
+	
+    private static JLabel statusLabel;
+    private String pathArchivo;
     
     Translator translator = new Translator();
 
@@ -377,6 +380,8 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
             JOptionPane.showMessageDialog(this,"MatricesIDE - Created by: Geeks for Geeks (https://www.geeksforgeeks.org/)","Notepad",JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getActionCommand().equals("Cortar")){
             jta.cut();
+        }else if(e.getActionCommand().equals("Correr")){
+            statusLabel.setText( Compilar() ); //Compilar() devuelve String marcando linea error
         }
     }
 	
