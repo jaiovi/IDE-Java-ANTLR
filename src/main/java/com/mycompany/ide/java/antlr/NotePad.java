@@ -185,7 +185,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                                 }
                                 else
                                 {
-                                    if (text.substring(wordL, wordR).matches("(\\W)*(1|2|3|4|5|6|7|8|9|0)"))
+                                    if (text.substring(wordL, wordR).matches("(\\W)* ([0-9])+"))
                                     {
                                         setCharacterAttributes(wordL, wordR - wordL, attrBlue, false); //colorea azul
                                     }
@@ -233,7 +233,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                         }
                         else
                         {
-                            if(text.substring(before, after).matches("(\\W)*(1|2|3|4|5|6|7|8|9|0)"))
+                            if(text.substring(before, after).matches("(\\W)* ([0-9])+"))
                             {
                                 setCharacterAttributes(before, after - before, attrBlue, false);
                             }
