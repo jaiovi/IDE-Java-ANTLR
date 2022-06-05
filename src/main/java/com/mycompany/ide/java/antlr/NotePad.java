@@ -28,6 +28,11 @@ import javax.swing.text.StyleContext;
 
 import ANTLR.*;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * GEEKS FOR GEEKS
  * @author sebjaiovi
@@ -359,6 +364,9 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                 try{
 
                     File fyl=jfc.getSelectedFile();
+                    pathArchivo=fyl.getAbsolutePath(); ///=========================== /path/documentos/hola.txt - .txt = /path/documentos/hola
+                    pathArchivo = pathArchivo.substring(0, pathArchivo.length() - 4);
+                    
                     SaveFile(fyl.getAbsolutePath());
                     this.setTitle(fyl.getName()+ " - MatricesIDE");
                     fnameContainer=fyl;
@@ -464,6 +472,16 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
             }
             //
             JOptionPane.showMessageDialog(this, translator.translation ,"Traduccion correcta",JOptionPane.INFORMATION_MESSAGE); 
+            
+            try{
+                //SaveFile(pathArchivo + ".java")); //usa el mismo nombre de archivo con el que se guardo, pero con .java
+                setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                DataOutputStream o=new DataOutputStream(new FileOutputStream(pathArchivo + ".java"));
+                o.writeBytes(translator.translation);
+                o.close();		
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }catch(Exception ers2){}
+            
             return "Compilado correctamente :) vea terminal la ejecucion del programa";
         }
         else {
