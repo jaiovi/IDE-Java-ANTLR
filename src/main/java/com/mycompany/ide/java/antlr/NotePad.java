@@ -184,7 +184,14 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                                     }
                                     else
                                     {
-                                        setCharacterAttributes(wordL, wordR - wordL, attrSimple, false); //no le hace nada   
+                                        if (text.substring(wordL, wordR).matches("(\\W)*(main)"))
+                                        {
+                                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false); //colorea negro y negritas
+                                        }
+                                        else
+                                        {
+                                            setCharacterAttributes(wordL, wordR - wordL, attrSimple, false); //no le hace nada  
+                                        } 
                                     }
                                 }
                             }
@@ -193,8 +200,6 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                     }
                     wordR++;
                 }
-                translator.updateCheck(txt.getText());
-                
             }
 
             public void remove (int offs, int len) throws BadLocationException {
@@ -227,12 +232,18 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                             }
                             else
                             {
-                                setCharacterAttributes(before, after - before, attrSimple, false);
+                                if (text.substring(before, after).matches("(\\W)*(main)"))
+                                {
+                                    setCharacterAttributes(before, after - before, attrBlack, false);
+                                }        
+                                else
+                                {
+                                   setCharacterAttributes(before, after - before, attrSimple, false);     
+                                }
                             }
                         }
                     }
                 }
-                translator.updateCheck(txt.getText());
             }
         };
         
