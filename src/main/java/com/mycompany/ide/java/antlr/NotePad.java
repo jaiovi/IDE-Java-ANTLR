@@ -396,26 +396,30 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         d.close();
     }
+
 	
     public void SaveFile(String fname) throws IOException {
         setCursor(new Cursor(Cursor.WAIT_CURSOR));
         DataOutputStream o=new DataOutputStream(new FileOutputStream(fname));
-        o.writeBytes(jta.getText());
+        o.writeBytes(txt.getText());
         o.close();		
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
-	
+
     public void windowDeactivated(WindowEvent e){}
     public void windowActivated(WindowEvent e){}
     public void windowDeiconified(WindowEvent e){}
     public void windowIconified(WindowEvent e){}
     public void windowClosed(WindowEvent e){}
+
     public void windowClosing(WindowEvent e) {
         Exiting();
     }
+
     public void windowOpened(WindowEvent e){}
+
     public void Exiting() {
-            System.exit(0);
+        System.exit(0);
     }
         
     //FUNCIONALIDADES
