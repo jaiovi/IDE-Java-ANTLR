@@ -137,14 +137,13 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
 
         //adicional para reportar DEBUGGING del compilado
 
-        String notifica = "Hola";
         // create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
         JPanel statusPanel = new JPanel();
         statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         con.add(statusPanel, BorderLayout.SOUTH);
         statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-        JLabel statusLabel = new JLabel(""+notifica); //varible a modificar
+        statusLabel = new JLabel("Listo :)"); //varible a modificar
         statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
         statusPanel.add(statusLabel);
                 
@@ -375,13 +374,11 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
         }else if(e.getActionCommand().equals("Correr")){ 
             // Llamando al traductor de lenguaje y ejecutor del codigo
             translator.updateCheck(txt.getText());
-            compilar("Programa");
+            statusLabel.setText( compilar("Programa") ); //Compilar() devuelve String marcando linea error
         }else if(e.getActionCommand().equals("Creditos")){ 
             JOptionPane.showMessageDialog(this,"MatricesIDE - Created by: Geeks for Geeks (https://www.geeksforgeeks.org/)","Notepad",JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getActionCommand().equals("Cortar")){
             jta.cut();
-        }else if(e.getActionCommand().equals("Correr")){
-            statusLabel.setText( Compilar() ); //Compilar() devuelve String marcando linea error
         }
     }
 	
@@ -466,7 +463,8 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                 System.out.println("");
             }
             //
-            return translator.translation;
+            JOptionPane.showMessageDialog(this, translator.translation ,"Traduccion correcta",JOptionPane.INFORMATION_MESSAGE); 
+            return "Compilado correctamente :) vea terminal la ejecucion del programa";
         }
         else {
             errores += "ERROR SEMANTICO\n";
