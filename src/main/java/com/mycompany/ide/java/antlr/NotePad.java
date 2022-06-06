@@ -157,7 +157,6 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                 int after = findFirstNonWordChar(text, offset + str.length());
                 int wordL = before;
                 int wordR = before;
-
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                         if (text.substring(wordL, wordR).matches("(\\W)*(matriz)"))
@@ -450,17 +449,29 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
         if (translator.translate("nombreArchivo")) {
             //
             // Imprimiendo resultado en panales
+            String output = "";
+            int matNum = 0;
             for (int [][] mat : translator.outputs) {
-                System.out.println("Matriz: ");
+                output += "[" + matNum + "]:\n";
+                output += "[";
                 for (int i = 0; i < mat.length; i++) {
+                    output += "[";
                     for (int j = 0; j < mat[i].length; j++) {
-                            System.out.print(mat[i][j] + "\t");
+                        output += mat[i][j];
+                        if (j != mat[i].length - 1) {
+                            output += ",\t";
+                        }
                     }
-                    System.out.println();
+                    output += "]";
+                    if (i != mat.length - 1) {
+                        output += ",\n";
+                    }
                 }
-                System.out.println("");
+                output += "]";
+                matNum++;
             }
-            //
+            
+            Output panel = new Output(output);
             return translator.translation;
         }
         else {

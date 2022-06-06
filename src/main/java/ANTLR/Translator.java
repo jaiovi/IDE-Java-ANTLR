@@ -86,7 +86,7 @@ public class Translator {
 			walker.walk(listener, tree);    // O(n) ~ O(log(n))
 			// Escribir archivo de salida
                         translation = listener.getOutputFile();
-			System.out.println(listener.getOutputFile());
+			// System.out.println(listener.getOutputFile());
 			// Imprimir en consola matrices de write
                         outputs = listener.writeList;
                         return true;
