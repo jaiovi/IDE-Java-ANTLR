@@ -28,6 +28,11 @@ import javax.swing.text.StyleContext;
 
 import ANTLR.*;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * GEEKS FOR GEEKS
  * @author sebjaiovi
@@ -40,6 +45,9 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
     JTextArea jtaColoreado = new JTextArea();
     private static JTextArea lines; //numeritos
     File fnameContainer;
+	
+    private static JLabel statusLabel;
+    private String pathArchivo;
     
     Translator translator = new Translator();
 
@@ -134,14 +142,13 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
 
         //adicional para reportar DEBUGGING del compilado
 
-        String notifica = "Hola";
         // create the status bar panel and shove it down the bottom of the frame https://stackoverflow.com/questions/3035880/how-can-i-create-a-bar-in-the-bottom-of-a-java-app-like-a-status-bar
         JPanel statusPanel = new JPanel();
         statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
         con.add(statusPanel, BorderLayout.SOUTH);
         statusPanel.setPreferredSize(new Dimension(con.getWidth(), 16));
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-        JLabel statusLabel = new JLabel(""+notifica); //varible a modificar
+        statusLabel = new JLabel("Listo :)"); //varible a modificar
         statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
         statusPanel.add(statusLabel);
                 
@@ -177,7 +184,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                                 }
                                 else
                                 {
-                                    if (text.substring(wordL, wordR).matches("(\\W)*(1|2|3|4|5|6|7|8|9|0)"))
+                                    if (text.substring(wordL, wordR).matches("(\\W)* ([0-9])+"))
                                     {
                                         setCharacterAttributes(wordL, wordR - wordL, attrBlue, false); //colorea azul
                                     }
@@ -225,7 +232,7 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                         }
                         else
                         {
-                            if(text.substring(before, after).matches("(\\W)*(1|2|3|4|5|6|7|8|9|0)"))
+                            if(text.substring(before, after).matches("(\\W)* ([0-9])+"))
                             {
                                 setCharacterAttributes(before, after - before, attrBlue, false);
                             }
@@ -356,6 +363,9 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                 try{
 
                     File fyl=jfc.getSelectedFile();
+                    pathArchivo=fyl.getAbsolutePath(); ///=========================== /path/documentos/hola.txt - .txt = /path/documentos/hola
+                    pathArchivo = pathArchivo.substring(0, pathArchivo.length() - 4);
+                    
                     SaveFile(fyl.getAbsolutePath());
                     this.setTitle(fyl.getName()+ " - MatricesIDE");
                     fnameContainer=fyl;
@@ -371,9 +381,9 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
         }else if(e.getActionCommand().equals("Correr")){ 
             // Llamando al traductor de lenguaje y ejecutor del codigo
             translator.updateCheck(txt.getText());
-            compilar("Programa");
+            statusLabel.setText( compilar("Programa") ); //Compilar() devuelve String marcando linea error
         }else if(e.getActionCommand().equals("Creditos")){ 
-            JOptionPane.showMessageDialog(this,"MatricesIDE - Created by: Geeks for Geeks (https://www.geeksforgeeks.org/)","Notepad",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Evidencia 2 de Implementación de métodos computacionales (Gpo 606) - Equipo 3","MatricesIDE",JOptionPane.INFORMATION_MESSAGE);
         }else if(e.getActionCommand().equals("Cortar")){
             jta.cut();
         }
@@ -471,8 +481,20 @@ public class NotePad extends JFrame implements ActionListener, WindowListener{
                 matNum++;
             }
             
-            Output panel = new Output(output);
-            return translator.translation;
+            new Output(translator.translation);
+            
+            try{
+                //SaveFile(pathArchivo + ".java")); //usa el mismo nombre de archivo con el que se guardo, pero con .java
+                setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                DataOutputStream o=new DataOutputStream(new FileOutputStream(pathArchivo + ".java"));
+                o.writeBytes(translator.translation);
+                o.close();		
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                new Output(output);
+                
+            }catch(Exception ers2){}
+            
+            return "Compilado correctamente :) vea terminal la ejecucion del programa";
         }
         else {
             errores += "ERROR SEMANTICO\n";
